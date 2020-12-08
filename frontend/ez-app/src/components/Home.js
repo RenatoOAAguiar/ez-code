@@ -1,4 +1,4 @@
-import {Component} from 'react';
+import {Component, useEffect} from 'react';
 import { CardHeader, Card, Col, Container, Row, CardBody } from 'reactstrap';
 import { AiOutlinePlusCircle } from 'react-icons/ai';
 
@@ -9,17 +9,29 @@ class Home extends Component {
         this.state = {
             items: []
         }
-        console.log(this.props);
     }
 
-    componentDidMount() {
+    componentWillMount() {
         fetch('http://localhost:8080/product')
         .then(result => result.json())
         .then(result => {
-          this.setState({
-            items: result,
-          })
+            this.setState({
+                items: result,
+            })
         })
+    }
+
+    getPromotions = () => {
+        let ids = this.props.cartItems.map(o => o.id);
+        let promotions = [];
+        ids.forEach(element => {
+            fetch('http://localhost:8080/product/' + element)
+            .then(result => result.json())
+            .then(result => {
+                promotions.push(result);
+                this.props.addPromotion(promotions);
+            })  
+        });
     }
 
     formatValue = (value) => {

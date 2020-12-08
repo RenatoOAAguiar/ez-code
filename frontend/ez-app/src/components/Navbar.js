@@ -76,6 +76,14 @@ let cartItems = [
             openPopover: !this.state.openPopover
         })
     }
+
+    countItems = (items) => {
+        if(items.length > 0) {
+            return items.map(o => o.qty).reduce((a, c) => { return a + c }); 
+        }
+
+        return 0;
+    }
     
 
     render() {
@@ -90,8 +98,8 @@ let cartItems = [
                         <div  style={{'marginBottom': '10px'}}>
                             {this.props.cartItems.map((value, index) => {
                                 return  <Container fluid="md">
-                                            <Row style={style.itemsStyle} sm="12">
-                                                <Col>{index + 1}</Col>
+                                            <Row style={style.itemsStyle} sm="12" key={value.id}>
+                                                <Col>{value.qty} x</Col>
                                                 <Col>
                                                     {value.name}
                                                 </Col>
@@ -125,7 +133,7 @@ let cartItems = [
                         <div style={style.chartIcon}>
                             <div style={style.linkStyle} >
                                 <Link id="ScheduleUpdateButton"><FaShoppingCart onClick={this.setPopover}/> </Link>
-                                <Badge color="danger" className="badge-pill" style={{fontSize: '9pt'}}>{this.props.cartItems.length}</Badge>
+                                <Badge color="danger" className="badge-pill" style={{fontSize: '9pt'}}>{this.countItems(this.props.cartItems)}</Badge>
                             </div>
                             <UncontrolledPopover trigger="click" placement="bottom" isOpen={this.state.openPopover} target="ScheduleUpdateButton">
                                 {({ scheduleUpdate }) => (

@@ -11,18 +11,54 @@ class App extends Component{
   constructor(props) {
     super(props);
     this.state = {
-      cart: []
+      cart: [],
+      promotions: []
     }
   }
 
+  componentDidMount() {
+      let ids = ['C8GDyLrHJb','Dwt5F7KAhi', 'PWWe3w1SDU'];
+      let promotions = [];
+      ids.forEach(element => {
+          fetch('http://localhost:8080/product/' + element)
+          .then(result => result.json())
+          .then(result => {
+              promotions.push(result);
+              this.addPromotion(promotions);
+          })  
+  })
+}
+
   removeItem = (item) => {
-    this.setState({
-      cart: this.state.cart.filter((v) => v.id !== item.id)
-    })
+    let index = this.state.cart.findIndex((o) => item.id === o.id);
+    if(this.state.cart[index]['qty'] > 1) {
+      this.state.cart[index]['qty'] -=1;
+      this.setState({
+        cart: this.state.cart
+      })
+    } else {
+        this.setState({
+          cart: this.state.cart.filter((v) => v.id !== item.id)
+        })
+    }
   }
 
   addItem = (item) => {
-    this.setState({cart: this.state.cart.concat(item)});
+    let index = this.state.cart.findIndex((o) => item.id === o.id);
+    if(index === -1) {
+      item['qty'] = 1
+      this.setState({cart: this.state.cart.concat(item)});
+    } else {
+      this.state.cart[index]['qty'] = this.state.cart[index]['qty'] + 1;
+      this.setState({cart: this.state.cart});
+    }
+
+  }
+
+  addPromotion = (items) => {
+    this.setState({
+      promotions: items
+    })
   }
 
   render () {
@@ -31,8 +67,8 @@ class App extends Component{
         <div className="App">
           <NavbarCustom cartItems={this.state.cart} addItem={this.addItem} removeItem={this.removeItem}/>
           <Switch>
-            <Route exact path="/" component={() => <Home addItem={this.addItem}  removeItem={this.removeItem} />}/>
-            <Route exact path="/cart" component={() => <Cart addItem={this.addItem}  removeItem={this.removeItem} />}/> 
+            <Route exact path="/" component={() => <Home addPromotion={this.addPromotion} cartItems={this.state.cart}  addItem={this.addItem}  removeItem={this.removeItem} />}/>
+            <Route exact path="/cart" component={() => <Cart promotions={this.state.promotions} cartItems={this.state.cart}  addItem={this.addItem}  removeItem={this.removeItem} />}/> 
           </Switch>
         </div>
       </BrowserRouter>
