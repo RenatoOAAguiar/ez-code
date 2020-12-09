@@ -46,7 +46,7 @@ class ListShoppings extends Component {
                                 <Col sm="2" style={{fontWeight: 'bold', color: 'green'}}>{this.formatValue(item.discount)} </Col>
                     </Row>
                 })
-                products = <Card style={{marginBottom: '20px'}}>{products}</Card>
+            products = <Card style={{marginBottom: '20px'}}><CardHeader style={{textAlign: 'left', fontWeight: 'bold'}}>{value.id}</CardHeader><CardBody>{products}</CardBody></Card>
                 return products;
             })
         } else {
