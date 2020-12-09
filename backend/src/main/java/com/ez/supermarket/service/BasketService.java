@@ -1,5 +1,6 @@
 package com.ez.supermarket.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,9 @@ public class BasketService {
 	public Shopping save(List<Product> products) {
 		Shopping shop = new Shopping();
 		shop.setUser("admin");
+		products.stream().forEach((item) -> {
+			item.setId(null);
+		});
 		shop.setProducts(products);
 		return basketRepository.save(shop);
 	}

@@ -77,9 +77,9 @@ let cartItems = [
         })
     }
 
-    countItems = (items) => {
-        if(items.length > 0) {
-            return items.map(o => o.qty).reduce((a, c) => { return a + c }); 
+    countItems = () => {
+        if(this.props.cartItems.length > 0) {
+            return this.props.cartItems.map(o => o.qty).reduce((a, c) => { return a + c }); 
         }
 
         return 0;
@@ -111,7 +111,7 @@ let cartItems = [
                                         </Container>
                             })}
                         </div>
-                        <Button color="success" onClick={() => this.goToCart()}>Finish</Button>
+                        <Button color="success" onClick={() => this.goToCart()}>Checkout</Button>
                     </div>
                     : 'Empty!'}
         
@@ -125,7 +125,14 @@ let cartItems = [
             
             <div>
                 <Navbar color="light" light expand="md">
-                    <Link to="/" style={style.linkStyle} ><span>Shopping</span></Link>
+                    <Row>
+                        <Col sm="6">
+                            <Link to="/" style={style.linkStyle} ><span>Shopping</span></Link>
+                        </Col>
+                        <Col sm="6">
+                            <Link to="/list" style={style.linkStyle} ><span>List</span></Link>
+                        </Col>
+                    </Row>
                     <NavbarToggler onClick={this.toggle} />
                     <Collapse isOpen={this.state.open} navbar>
                         <Nav className="mr-auto" navbar>
@@ -134,7 +141,7 @@ let cartItems = [
                         <div style={style.chartIcon}>
                             <div style={style.linkStyle} >
                                 <Link id="ScheduleUpdateButton"><FaShoppingCart onClick={this.setPopover}/> </Link>
-                                <Badge color="danger" className="badge-pill" style={{fontSize: '9pt'}}>{this.countItems(this.props.cartItems)}</Badge>
+                                <Badge color="danger" className="badge-pill" style={{fontSize: '9pt'}}>{this.countItems()}</Badge>
                             </div>
                             <UncontrolledPopover trigger="click" placement="bottom" isOpen={this.state.openPopover} target="ScheduleUpdateButton">
                                 {({ scheduleUpdate }) => (

@@ -1,5 +1,6 @@
 import { CardHeader, Card, Col, Container, Row, CardBody, Badge, Button } from 'reactstrap';
 import { BsTrashFill } from 'react-icons/bs';
+import {withRouter} from 'react-router-dom';
 
 const { Component } = require("react");
 
@@ -26,6 +27,8 @@ class Cart extends Component {
         let v = '' + value;
         if(v.length === 3) {
             v = v.substring(0,1) + ',' + v.slice(-2)
+        } else if(v.length == 2){
+            v = '0,' + v;
         } else{
             v = v.substring(0,2) + ',' + v.slice(-2)
         }
@@ -35,15 +38,6 @@ class Cart extends Component {
     componentDidMount() {
         if(this.props.cartItems.length > 0) {
             const unique = [...new Set(this.props.cartItems.map(item => item.id))];
-            let result = [];
-            unique.forEach((item) => {
-                /* if(result.length === 0 || result.filter((o) => o.id == item.id).length === 0){
-                    result.push({'id': item.id, 'total': item.price * item.qty, 'qty': item.qty})
-                } else {
-                    let index = result.findIndex((o) => item.id === o.id);
-                    result[index]['total']
-                } */
-            })
 
             this.props.cartItems.forEach((item) => {
                 item['custo'] = 0;
@@ -88,7 +82,7 @@ class Cart extends Component {
                 saladData['custo'] = saladData['price'] * saladData['qty'];
                 saladData['total'] = saladData['custo'];
                 if(saladData['qty'] >= promotionSaladData['required_qty']){
-                    saladData['discount'] = (saladData['price'] * saladData['qty'])  - promotionSaladData['price'];
+                    saladData['discount'] = Math.trunc(saladData['custo'] - (saladData['custo']  *((100 - promotionSaladData['amount'])/100)));
                     saladData['total'] = saladData['custo'] - saladData['discount'];
                 }
             }
@@ -103,12 +97,28 @@ class Cart extends Component {
             let total = this.formatValue(this.props.cartItems.reduce((acc, curr) => acc + curr.total, 0));
             let custo = this.formatValue(this.props.cartItems.reduce((acc, curr) => acc + curr.custo, 0));
             let discount = this.formatValue(this.props.cartItems.reduce((acc, curr) => acc + curr.discount, 0));
+
             this.setState({
                 total: total,
                 custo: custo,
                 discount: discount
             });
         }
+    }
+
+    save = () => {
+        const requestOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(this.props.cartItems)
+        };
+        fetch('http://localhost:8080/basket', requestOptions)
+            .then(response => response.json())
+            .then(data => {
+                this.props.clearOnSave();
+                this.props.history.push('/list');
+                window.location.reload();
+            });
     }
     
     render() {
@@ -176,7 +186,7 @@ class Cart extends Component {
                 </Row>
                 <Row style={{marginBottom: '20px'}}>
                     <Col sm="8">
-                        <Button size="lg" color="success" lg onClick={() => {}}>Finish</Button>
+                        <Button size="lg" color="success" lg onClick={() => {this.save()}}>Finish</Button>
                     </Col> 
                 </Row>
             </div>
@@ -186,4 +196,4 @@ class Cart extends Component {
 
 }
 
-export default Cart;
+export default withRouter(Cart);

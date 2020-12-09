@@ -6,6 +6,7 @@ import Cart from './components/Cart';
 import { Component } from 'react';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import ListShoppings from './components/List';
 
 class App extends Component{
 
@@ -65,6 +66,13 @@ class App extends Component{
     })
   }
 
+  clearOnSave = () => {
+    this.state ={
+      cart: [],
+      promotions: []
+    }
+  }
+
   createToast = (text, type) => {
     if(type == 'success') {
       toast.success(text);
@@ -81,7 +89,8 @@ class App extends Component{
           <NavbarCustom cartItems={this.state.cart} addItem={this.addItem} removeItem={this.removeItem}/>
           <Switch>
             <Route exact path="/" component={() => <Home addPromotion={this.addPromotion} cartItems={this.state.cart}  addItem={this.addItem}  removeItem={this.removeItem} />}/>
-            <Route exact path="/cart" component={() => <Cart promotions={this.state.promotions} cartItems={this.state.cart}  addItem={this.addItem}  removeItem={this.removeItem} />}/> 
+            <Route exact path="/cart" component={() => <Cart clearOnSave={this.clearOnSave} promotions={this.state.promotions} cartItems={this.state.cart}  addItem={this.addItem}  removeItem={this.removeItem} />}/> 
+            <Route exact path="/list" component={() => <ListShoppings clearOnSave={this.clearOnSave} promotions={this.state.promotions} cartItems={this.state.cart}  addItem={this.addItem}  removeItem={this.removeItem} />}/> 
           </Switch>
         </div>
       </BrowserRouter>
