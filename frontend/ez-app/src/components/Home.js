@@ -2,6 +2,7 @@ import {Component, useEffect} from 'react';
 import { CardHeader, Card, Col, Container, Row, CardBody } from 'reactstrap';
 import { AiOutlinePlusCircle } from 'react-icons/ai';
 
+
 class Home extends Component {
 
     constructor(props) {
@@ -41,7 +42,7 @@ class Home extends Component {
         } else{
             v = v.substring(0,2) + ',' + v.slice(-2)
         }
-        return '$' + v;
+        return '£' + v;
     }
 
     
@@ -67,6 +68,7 @@ class Home extends Component {
             });
             let result = (
                 <Container className="text-center">
+                
                 <h3>Choose your items!</h3>
                 <div style={{marginBottom: '30px', marginTop: '30px'}}>
                     {list}

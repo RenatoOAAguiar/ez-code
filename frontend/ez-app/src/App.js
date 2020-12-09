@@ -4,6 +4,8 @@ import Home from './components/Home';
 import NavbarCustom from './components/Navbar';
 import Cart from './components/Cart';
 import { Component } from 'react';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 
 class App extends Component{
 
@@ -41,6 +43,7 @@ class App extends Component{
           cart: this.state.cart.filter((v) => v.id !== item.id)
         })
     }
+    this.createToast(`${item['name']} removed from the Cart!`, 'success')
   }
 
   addItem = (item) => {
@@ -52,6 +55,7 @@ class App extends Component{
       this.state.cart[index]['qty'] = this.state.cart[index]['qty'] + 1;
       this.setState({cart: this.state.cart});
     }
+    this.createToast(`${item['name']} add on the Cart!`, 'success')
 
   }
 
@@ -61,10 +65,19 @@ class App extends Component{
     })
   }
 
+  createToast = (text, type) => {
+    if(type == 'success') {
+      toast.success(text);
+    } else {
+      toast.error(text);
+    }
+  }
+
   render () {
     return (
       <BrowserRouter>
         <div className="App">
+          <ToastContainer />
           <NavbarCustom cartItems={this.state.cart} addItem={this.addItem} removeItem={this.removeItem}/>
           <Switch>
             <Route exact path="/" component={() => <Home addPromotion={this.addPromotion} cartItems={this.state.cart}  addItem={this.addItem}  removeItem={this.removeItem} />}/>

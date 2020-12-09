@@ -99,14 +99,15 @@ let cartItems = [
                             {this.props.cartItems.map((value, index) => {
                                 return  <Container fluid="md">
                                             <Row style={style.itemsStyle} sm="12" key={value.id}>
-                                                <Col>{value.qty} x</Col>
-                                                <Col>
+                                                <Col sm="4">{value.qty} x</Col>
+                                                <Col sm="6">
                                                     {value.name}
                                                 </Col>
-                                                <Col>
+                                                <Col sm="2">
                                                     <BsTrashFill onClick={() => {this.props.removeItem(value)}} style={{'color': 'red'}} />
                                                 </Col>
                                             </Row>
+                                            <hr/>
                                         </Container>
                             })}
                         </div>
