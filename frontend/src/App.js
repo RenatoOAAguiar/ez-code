@@ -74,7 +74,7 @@ class App extends Component{
   }
 
   createToast = (text, type) => {
-    if(type == 'success') {
+    if(type === 'success') {
       toast.success(text);
     } else {
       toast.error(text);

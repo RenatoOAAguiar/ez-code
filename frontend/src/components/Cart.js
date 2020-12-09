@@ -27,7 +27,7 @@ class Cart extends Component {
         let v = '' + value;
         if(v.length === 3) {
             v = v.substring(0,1) + ',' + v.slice(-2)
-        } else if(v.length == 2){
+        } else if(v.length === 2){
             v = '0,' + v;
         } else{
             v = v.substring(0,2) + ',' + v.slice(-2)
@@ -37,8 +37,6 @@ class Cart extends Component {
 
     componentDidMount() {
         if(this.props.cartItems.length > 0) {
-            const unique = [...new Set(this.props.cartItems.map(item => item.id))];
-
             this.props.cartItems.forEach((item) => {
                 item['custo'] = 0;
                 item['discount'] = 0;
@@ -48,7 +46,7 @@ class Cart extends Component {
             //if burger PWWe3w1SDU
             let indexB = this.props.cartItems.findIndex((o) => 'PWWe3w1SDU' === o.id);
             let indexBP = this.props.promotions.findIndex((o) => 'PWWe3w1SDU' === o.id);
-            if(indexB != -1) {
+            if(indexB !== -1) {
                 let burguerData = this.props.cartItems[indexB];
                 let promotionBurguerData = this.props.promotions[indexBP]['promotions'][0];
                 burguerData['custo'] = burguerData['price'] * burguerData['qty'];
@@ -62,7 +60,7 @@ class Cart extends Component {
             //if pizza Dwt5F7KAhi
             let indexP = this.props.cartItems.findIndex((o) => 'Dwt5F7KAhi' === o.id);
             let indexPP = this.props.promotions.findIndex((o) => 'Dwt5F7KAhi' === o.id);
-            if(indexP != -1) {
+            if(indexP !== -1) {
                 let pizzaData = this.props.cartItems[indexP];
                 let promotionPizzaData = this.props.promotions[indexPP]['promotions'][0];
                 pizzaData['custo'] = pizzaData['price'] * pizzaData['qty'];
@@ -76,7 +74,7 @@ class Cart extends Component {
             //if salad C8GDyLrHJb
             let indexS = this.props.cartItems.findIndex((o) => 'C8GDyLrHJb' === o.id);
             let indexSP = this.props.promotions.findIndex((o) => 'C8GDyLrHJb' === o.id);
-            if(indexS != -1) {
+            if(indexS !== -1) {
                 let saladData = this.props.cartItems[indexS];
                 let promotionSaladData = this.props.promotions[indexSP]['promotions'][0];
                 saladData['custo'] = saladData['price'] * saladData['qty'];
@@ -89,7 +87,7 @@ class Cart extends Component {
 
             //if boring fries 4MB7UfpTQs
             let indexF = this.props.cartItems.findIndex((o) => '4MB7UfpTQs' === o.id);
-            if(indexF != -1) {
+            if(indexF !== -1) {
                 let friesData = this.props.cartItems[indexF];
                 friesData['custo'] = friesData['price'] * friesData['qty'];
                 friesData['total'] = friesData['custo'];
@@ -169,7 +167,7 @@ class Cart extends Component {
                             <Card>
                                 <CardBody  className="text-left">
                                     <Row>
-                                        <Col sm="6">{this.state.discount == 0 ? 'Total :' :'Raw Total:'}</Col>
+                                        <Col sm="6">{this.state.discount === 0 ? 'Total :' :'Raw Total:'}</Col>
                                         <Col sm="6">{this.state.custo}</Col>
                                     </Row>
                                     <Row style={{color: 'green', fontWeight: 'bold'}}>

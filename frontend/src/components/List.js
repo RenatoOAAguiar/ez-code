@@ -1,5 +1,4 @@
-import { CardHeader, Card, Col, Container, Row, CardBody, Badge, Button } from 'reactstrap';
-import { BsTrashFill } from 'react-icons/bs';
+import { CardHeader, Card, Col, Container, Row, CardBody, Badge } from 'reactstrap';
 
 const { Component } = require("react");
 
@@ -15,7 +14,7 @@ class ListShoppings extends Component {
         let v = '' + value;
         if(v.length === 3) {
             v = v.substring(0,1) + ',' + v.slice(-2)
-        } else if(v.length == 2){
+        } else if(v.length === 2){
             v = '0,' + v;
         } else{
             v = v.substring(0,2) + ',' + v.slice(-2)

@@ -1,4 +1,4 @@
-import {Component, useEffect} from 'react';
+import {Component} from 'react';
 import { CardHeader, Card, Col, Container, Row, CardBody } from 'reactstrap';
 import { AiOutlinePlusCircle } from 'react-icons/ai';
 

@@ -1,0 +1,23 @@
+version: '3'
+services:
+  api:
+     build:
+       dockerfile: backend/Dockerfile
+       context: .
+     image: ez/api
+     container_name: ez-api
+     ports:
+       - 8080:8080
+     network_mode: "host"
+  app:
+     build:
+       dockerfile: frontend/Dockerfile
+       context: .
+     image: ez/app
+     container_name: react-app
+     ports:
+       - 3000:3000
+     environment: 
+       - NODE_ENV=development
+     depends_on: 
+       - api
