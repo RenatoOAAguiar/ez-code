@@ -8,4 +8,6 @@ public class Promotion {
 	private String type;
 	private Integer required_qty;
 	private Integer free_qty;
+	private Integer price;
+	private Integer amount;
 }

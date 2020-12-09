@@ -11,4 +11,8 @@ public class Product {
 	private String name;
 	private Integer price;
 	private List<Promotion> promotions;
+	private Integer qty;
+	private Integer custo;
+	private Integer total;
+	private Integer discount;
 }

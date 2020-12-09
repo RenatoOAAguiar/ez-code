@@ -31,17 +31,95 @@ class Cart extends Component {
         }
         return '£' + v;
     }
+
+    componentDidMount() {
+        if(this.props.cartItems.length > 0) {
+            const unique = [...new Set(this.props.cartItems.map(item => item.id))];
+            let result = [];
+            unique.forEach((item) => {
+                /* if(result.length === 0 || result.filter((o) => o.id == item.id).length === 0){
+                    result.push({'id': item.id, 'total': item.price * item.qty, 'qty': item.qty})
+                } else {
+                    let index = result.findIndex((o) => item.id === o.id);
+                    result[index]['total']
+                } */
+            })
+
+            this.props.cartItems.forEach((item) => {
+                item['custo'] = 0;
+                item['discount'] = 0;
+                item['total'] = 0;
+            })
+
+            //if burger PWWe3w1SDU
+            let indexB = this.props.cartItems.findIndex((o) => 'PWWe3w1SDU' === o.id);
+            let indexBP = this.props.promotions.findIndex((o) => 'PWWe3w1SDU' === o.id);
+            if(indexB != -1) {
+                let burguerData = this.props.cartItems[indexB];
+                let promotionBurguerData = this.props.promotions[indexBP]['promotions'][0];
+                burguerData['custo'] = burguerData['price'] * burguerData['qty'];
+                burguerData['total'] = burguerData['custo']
+                if(burguerData['qty'] >= promotionBurguerData['required_qty']){
+                    burguerData['discount'] = burguerData['price'] * promotionBurguerData['free_qty'];
+                    burguerData['total'] = burguerData['custo'] - burguerData['discount'];
+                }
+            }
+
+            //if pizza Dwt5F7KAhi
+            let indexP = this.props.cartItems.findIndex((o) => 'Dwt5F7KAhi' === o.id);
+            let indexPP = this.props.promotions.findIndex((o) => 'Dwt5F7KAhi' === o.id);
+            if(indexP != -1) {
+                let pizzaData = this.props.cartItems[indexP];
+                let promotionPizzaData = this.props.promotions[indexPP]['promotions'][0];
+                pizzaData['custo'] = pizzaData['price'] * pizzaData['qty'];
+                pizzaData['total'] = pizzaData['custo'];
+                if(pizzaData['qty'] >= promotionPizzaData['required_qty']){
+                    pizzaData['discount'] = (pizzaData['price'] * pizzaData['qty'])  - promotionPizzaData['price'];
+                    pizzaData['total'] = pizzaData['custo'] - pizzaData['discount'];
+                }
+            }
+
+            //if salad C8GDyLrHJb
+            let indexS = this.props.cartItems.findIndex((o) => 'C8GDyLrHJb' === o.id);
+            let indexSP = this.props.promotions.findIndex((o) => 'C8GDyLrHJb' === o.id);
+            if(indexS != -1) {
+                let saladData = this.props.cartItems[indexS];
+                let promotionSaladData = this.props.promotions[indexSP]['promotions'][0];
+                saladData['custo'] = saladData['price'] * saladData['qty'];
+                saladData['total'] = saladData['custo'];
+                if(saladData['qty'] >= promotionSaladData['required_qty']){
+                    saladData['discount'] = (saladData['price'] * saladData['qty'])  - promotionSaladData['price'];
+                    saladData['total'] = saladData['custo'] - saladData['discount'];
+                }
+            }
+
+            //if boring fries 4MB7UfpTQs
+            let indexF = this.props.cartItems.findIndex((o) => '4MB7UfpTQs' === o.id);
+            if(indexF != -1) {
+                let friesData = this.props.cartItems[indexF];
+                friesData['custo'] = friesData['price'] * friesData['qty'];
+                friesData['total'] = friesData['custo'];
+            }
+            let total = this.formatValue(this.props.cartItems.reduce((acc, curr) => acc + curr.total, 0));
+            let custo = this.formatValue(this.props.cartItems.reduce((acc, curr) => acc + curr.custo, 0));
+            let discount = this.formatValue(this.props.cartItems.reduce((acc, curr) => acc + curr.discount, 0));
+            this.setState({
+                total: total,
+                custo: custo,
+                discount: discount
+            });
+        }
+    }
     
     render() {
         let result;
         if(this.props.cartItems.length > 0) {
-            // Get ids
             result = this.props.cartItems.map((value, index) =>{
                 return <Row style={{marginBottom: '10px'}}>
                             <Col sm="1"><Badge color="primary">{index + 1}</Badge></Col>
                             <Col sm="2">{value.qty} x </Col>
                             <Col sm="3">{value.name}</Col>
-                            <Col sm="4" style={{fontWeight: 'bold'}}>{this.formatValue(value.price)} </Col>
+                            <Col sm="4" style={{fontWeight: 'bold'}}>{this.formatValue(value.price * value.qty)} </Col>
                             <Col sm="2" className="text-right"><BsTrashFill onClick= {() => {this.props.removeItem(value)}} style={{cursor: 'pointer'}} color="red" /></Col>
                 </Row>
             })
@@ -82,15 +160,15 @@ class Cart extends Component {
                                 <CardBody  className="text-left">
                                     <Row>
                                         <Col sm="6">{this.state.discount == 0 ? 'Total :' :'Raw Total:'}</Col>
-                                        <Col sm="6">{this.state.total}</Col>
+                                        <Col sm="6">{this.state.custo}</Col>
                                     </Row>
-                                    <Row>
+                                    <Row style={{color: 'green', fontWeight: 'bold'}}>
                                         <Col sm="6">Total Promos: </Col>
                                         <Col sm="6">{this.state.discount}</Col>
                                     </Row>
-                                    <Row>
+                                    <Row style={{color: 'black', fontWeight: 'bold'}}>
                                         <Col sm="6">Total Payable: </Col>
-                                        <Col sm="6">{this.state.custo}</Col>
+                                        <Col sm="6">{this.state.total}</Col>
                                     </Row>
                                 </CardBody>
                             </Card>
