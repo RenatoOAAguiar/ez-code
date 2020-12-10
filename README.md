@@ -12,6 +12,7 @@
     1. Create network `docker network create app-network`
     2. Execute `docker-compose build`
     3. Execute `docker-compose up`
+3. Interface can be access from http://localhost:3000
 
 **About the code**
 
