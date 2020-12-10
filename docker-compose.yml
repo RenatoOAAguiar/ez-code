@@ -1,23 +1,44 @@
-version: '3'
+version: '3.7'
 services:
   api:
      build:
-       dockerfile: backend/Dockerfile
-       context: .
+       dockerfile: Dockerfile
+       context: ./backend
      image: ez/api
      container_name: ez-api
      ports:
-       - 8080:8080
-     network_mode: "host"
+       - "8080:8080"
+     depends_on: 
+       - mock
+     networks:
+       - app-network
+
   app:
      build:
-       dockerfile: frontend/Dockerfile
-       context: .
+       dockerfile: Dockerfile
+       context: ./frontend
      image: ez/app
      container_name: react-app
      ports:
-       - 3000:3000
+       - "3000:3000"
      environment: 
        - NODE_ENV=development
      depends_on: 
        - api
+     networks:
+       - app-network
+
+  mock:
+     build:
+       dockerfile: Dockerfile
+       context: ./wiremock
+     image: ez/mock
+     container_name: mock
+     ports:
+       - "8081:8081"
+     networks:
+       - app-network
+
+networks:    
+  app-network:
+    external: true

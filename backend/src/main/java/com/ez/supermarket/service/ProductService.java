@@ -17,7 +17,7 @@ public class ProductService {
 	@Autowired
 	private RestTemplate restTemplate;
 	
-	final String uri = "http://localhost:8081/products";
+	final String uri = "http://mock:8081/products";
 
 	public List<Product> getProducts() {
 		ResponseEntity<Product[]> response = restTemplate.getForEntity(uri, Product[].class);
